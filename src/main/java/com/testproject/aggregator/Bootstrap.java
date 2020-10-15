@@ -7,15 +7,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 
 @SpringBootApplication
 @ComponentScan(basePackages = "com.testproject.grpc")
 public class Bootstrap {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args)  {
         SpringApplication.run(Bootstrap.class, args);
 
     }

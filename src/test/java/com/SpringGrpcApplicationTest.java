@@ -5,11 +5,7 @@ import com.testproject.domain.ResponseDTO;
 import com.testproject.grpc.client.EchoTestClient;
 import com.testproject.grpc.client.EchoTestClientAsync;
 import com.testproject.grpc.echo.Address;
-import com.testproject.grpc.echo.Person;
-import com.testproject.grpc.echo.Persons;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Bootstrap.class)
