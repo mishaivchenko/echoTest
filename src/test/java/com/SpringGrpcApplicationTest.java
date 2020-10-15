@@ -5,25 +5,27 @@ import com.testproject.domain.ResponseDTO;
 import com.testproject.grpc.client.EchoTestClient;
 import com.testproject.grpc.client.EchoTestClientAsync;
 import com.testproject.grpc.echo.Address;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
+
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Bootstrap.class)
 public class SpringGrpcApplicationTest {
 
     List<Address> addressList;
 
-    @Before
+    @BeforeEach
     public void init(){
         addressList = new ArrayList<>();
 
@@ -57,6 +59,7 @@ public class SpringGrpcApplicationTest {
         String url = "https://www.google.com/";
         ResponseDTO dto = echoTestClient.echo(url);
         assertEquals("200",dto.getResponseCode());
+
     }
 
     public void testEchoBadRequest(){
