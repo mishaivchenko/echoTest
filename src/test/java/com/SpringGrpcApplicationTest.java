@@ -16,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -33,18 +34,24 @@ public class SpringGrpcApplicationTest {
         addressList.add(Address.newBuilder().setHostname("https://www.google.com/").build());
         addressList.add(Address.newBuilder().setHostname("https://www.gitlab.com/").build());
         addressList.add(Address.newBuilder().setHostname("https://www.github.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.google.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.google.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.google.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.google.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.google.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.google.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.google.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.google.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.google.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.google.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.google.com/").build());
+        addressList.add(Address.newBuilder().setHostname("https://aws.amazon.com/").build());
+        addressList.add(Address.newBuilder().setHostname("https://www.amazon.com/").build());
+        addressList.add(Address.newBuilder().setHostname("https://www.apple.com/").build());
+        addressList.add(Address.newBuilder().setHostname("https://www.microsoft.com/").build());
+        addressList.add(Address.newBuilder().setHostname("https://blog.maddevs.io/").build());
+        addressList.add(Address.newBuilder().setHostname("https://grpc.io/").build());
+        addressList.add(Address.newBuilder().setHostname("https://ru.wikipedia.org/").build());
+        addressList.add(Address.newBuilder().setHostname("https://habr.com/ru/").build());
+        addressList.add(Address.newBuilder().setHostname("http://dojki.com/").build());
+        addressList.add(Address.newBuilder().setHostname("https://stackoverflow.com/").build());
+        addressList.add(Address.newBuilder().setHostname("https://www.youtube.com/").build());
         addressList.add(Address.newBuilder().setHostname("https://allo.ua/ua/televizory-a-mediapleery/").build());
+        addressList.add(Address.newBuilder().setHostname("https://javarush.ru/").build());
+        addressList.add(Address.newBuilder().setHostname("https://junit.org//").build());
+        addressList.add(Address.newBuilder().setHostname("https://shneider-host.ru/").build());
+        addressList.add(Address.newBuilder().setHostname("https://spring.io").build());
+        addressList.add(Address.newBuilder().setHostname("https://www.oracle.com/").build());
+
 
     }
 
@@ -59,21 +66,21 @@ public class SpringGrpcApplicationTest {
 
 
    @Test
-    public void testEcho(){
+    public void testEchoWithCorrectHostname(){
         String url = "https://www.google.com/";
         ResponseDTO dto = echoTestClient.echo(url);
         assertEquals("200",dto.getResponseCode());
 
     }
-
-    public void testEchoBadRequest(){
+    @Test
+    public void testEchoBadRequestReturnedResultMustBeEqualsMinusOne(){
         String wrongHostName = "https://www.YaMiha.com/";
         ResponseDTO dto = echoTestClient.echo(wrongHostName);
         assertEquals("-1",dto.getResponseTime());
     }
 
     @Test
-    public void TestEchoAsync() throws InterruptedException {
+    public void EchoAsyncTestWithCorrectHostname() throws InterruptedException {
        ResponseDTO dto = echoTestClientAsync.echoAsync(addressList).stream()
                .findFirst()
                .get();
@@ -82,7 +89,7 @@ public class SpringGrpcApplicationTest {
     }
 
     @Test
-    public void TestEchoAsyncBadRequest() throws InterruptedException {
+    public void testEchoAsyncBadRequestReturnedResultMustBeEqualsMinusOne() throws InterruptedException {
         List<Address> addressesWithBadHost = new ArrayList<>();
         String wrongHostName = "https://www.YaMiha.com/";
         addressesWithBadHost.add(Address.newBuilder().setHostname(wrongHostName).build());
@@ -96,7 +103,7 @@ public class SpringGrpcApplicationTest {
     }
 
     @Test
-    public void callTest() throws Exception {
+    public void concurrentEchoTestBlockStubSingleMessageGoodResponseCheck() throws Exception {
        ResponseDTO dto = concurrentEchoTestClient.echoWithThreads("https://www.google.com/");
        assertEquals("200",dto.getResponseCode());
     }
@@ -116,7 +123,25 @@ public class SpringGrpcApplicationTest {
         assertEquals("404",dto.getResponseCode());
     }
 
-   // @Test
+    @Test
+    public void testCallAsyncStubForFourTimesHostnameMustBeLinkedToCorrectResponseDTO() throws Exception {
+        String address404 = "https://allo.ua/ua/televizory-a-mediapleery/";
+        List<List<ResponseDTO>> listListResponseDto = new ArrayList<>();
+        Callable<List<ResponseDTO>> callable = () -> echoTestClientAsync.echoAsync(addressList);
+
+        for(int i = 0; i<4; i++){
+            List<ResponseDTO> responseDTOList = callable.call();
+            listListResponseDto.add(responseDTOList);
+        }
+        ResponseDTO dto = listListResponseDto.get(1).stream()
+                .filter(i -> i.getHostname().equals(address404))
+                .findFirst()
+                .get();
+
+        assertEquals("404",dto.getResponseCode());
+    }
+
+
 
 
 

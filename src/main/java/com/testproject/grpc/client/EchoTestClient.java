@@ -33,7 +33,6 @@ public class EchoTestClient {
                 .setHostname(host)
                 .build();
         Response response = echoTestServiceBlockingStub.echo(address);
-        //echoTestServiceBlockingStub.withExecutor().
         return new ResponseDTO(response.getStatus(),response.getResponseTime(), response.getHostname());
     }
 

@@ -36,6 +36,7 @@ public class EchoTestServiceImpl extends
             responseTime = String.valueOf(System.nanoTime() - start);
 
         } catch (IOException e) {
+            logger.error("server responded {}", e.getMessage());
             status = e.getMessage();
             responseTime = "-1";
         }

@@ -68,7 +68,7 @@ public class EchoTestClientAsync {
 
         echoAsync.onCompleted();
 
-        if (!countDownLatch.await(1, TimeUnit.MINUTES)) {
+        if (!countDownLatch.await(2, TimeUnit.MINUTES)) {
             throw new RuntimeException("Server not responding");
         }
 
