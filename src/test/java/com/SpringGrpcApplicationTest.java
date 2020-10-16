@@ -2,6 +2,7 @@ package com;
 
 import com.testproject.aggregator.Bootstrap;
 import com.testproject.domain.ResponseDTO;
+import com.testproject.grpc.client.ConcurrentEchoTestClient;
 import com.testproject.grpc.client.EchoTestClient;
 import com.testproject.grpc.client.EchoTestClientAsync;
 import com.testproject.grpc.echo.Address;
@@ -43,7 +44,7 @@ public class SpringGrpcApplicationTest {
         addressList.add(Address.newBuilder().setHostname("https://www.google.com/").build());
         addressList.add(Address.newBuilder().setHostname("https://www.google.com/").build());
         addressList.add(Address.newBuilder().setHostname("https://www.google.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.google.com/").build());
+        addressList.add(Address.newBuilder().setHostname("https://allo.ua/ua/televizory-a-mediapleery/").build());
 
     }
 
@@ -52,6 +53,9 @@ public class SpringGrpcApplicationTest {
 
     @Autowired
     private EchoTestClientAsync echoTestClientAsync;
+
+    @Autowired
+    private ConcurrentEchoTestClient concurrentEchoTestClient;
 
 
    @Test
@@ -90,5 +94,31 @@ public class SpringGrpcApplicationTest {
         assertEquals("-1",dto.getResponseTime());
 
     }
+
+    @Test
+    public void callTest() throws Exception {
+       ResponseDTO dto = concurrentEchoTestClient.echoWithThreads("https://www.google.com/");
+       assertEquals("200",dto.getResponseCode());
+    }
+
+    @Test
+    public void testBlockStubConcurrentHostnameMustBeLinkedToCorrectResponseDTO() throws Exception {
+       //Given
+       String address404 = "https://allo.ua/ua/televizory-a-mediapleery/";
+       //When
+        List<ResponseDTO> responseDTOList = concurrentEchoTestClient.echoWithThreads(addressList);
+        //Then
+        ResponseDTO dto = responseDTOList.stream()
+                .filter(i -> i.getHostname().equals(address404))
+                .findFirst()
+                .get();
+
+        assertEquals("404",dto.getResponseCode());
+    }
+
+   // @Test
+
+
+
 
 }

@@ -45,6 +45,7 @@ public class EchoTestServiceAsyncImpl extends
                 responses.add(Response.newBuilder()
                         .setStatus(status)
                         .setResponseTime(responseTime)
+                        .setHostname(address.getHostname())
                         .build());
             }
 

@@ -46,7 +46,7 @@ public class EchoTestClientAsync {
             public void onNext(Responses responses) {
 
                 list[0] = responses.getAddressesList().stream()
-                        .map(i -> new ResponseDTO(i.getStatus(),i.getResponseTime()))
+                        .map(i -> new ResponseDTO(i.getStatus(),i.getResponseTime(),i.getHostname()))
                         .collect(Collectors.toList());
 
                 countDownLatch.countDown();

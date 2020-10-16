@@ -10,6 +10,7 @@ message Address{
 message Response {
   string status = 1;
   string responseTime = 2;
+  string hostname = 3;
 }
 
 message Responses {

@@ -44,6 +44,7 @@ public class EchoTestServiceImpl extends
         com.testproject.grpc.echo.Response response = com.testproject.grpc.echo.Response.newBuilder()
                 .setStatus(status)
                 .setResponseTime(responseTime)
+                .setHostname(request.getHostname())
                 .build();
 
         logger.info("server responded {}", response);
