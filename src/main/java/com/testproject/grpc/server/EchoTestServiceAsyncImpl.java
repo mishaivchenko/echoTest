@@ -25,6 +25,7 @@ public class EchoTestServiceAsyncImpl extends
             final List<Response> responses = new ArrayList<>();
             @Override
             public void onNext(Address address) {
+                logger.info("server received {}", address);
                 String status;
                 String responseTime;
                 URL url;
@@ -32,12 +33,16 @@ public class EchoTestServiceAsyncImpl extends
                     url = new URL(address.getHostname());
                     long start = System.nanoTime();
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod(RequestMethod.GET.name());
+                    connection.setRequestMethod(RequestMethod.HEAD.name());
 
                     status = String.valueOf(connection.getResponseCode());
                     responseTime = String.valueOf(System.nanoTime() - start);
+                    logger.info("address processed {}", " hostname: " + address.getHostname()
+                                                      + " status:  " + status
+                                                      + " response time: " + responseTime);
 
                 } catch (IOException e) {
+                    logger.error("Error {}", e.getMessage());
                     status = "Error occured:" + e.getMessage();
                     responseTime = "-1";
                 }

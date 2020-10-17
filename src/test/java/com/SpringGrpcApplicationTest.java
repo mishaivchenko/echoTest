@@ -6,7 +6,6 @@ import com.testproject.grpc.client.ConcurrentEchoTestClient;
 import com.testproject.grpc.client.EchoTestClient;
 import com.testproject.grpc.client.EchoTestClientAsync;
 import com.testproject.grpc.echo.Address;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,8 +50,6 @@ public class SpringGrpcApplicationTest {
         addressList.add(Address.newBuilder().setHostname("https://shneider-host.ru/").build());
         addressList.add(Address.newBuilder().setHostname("https://spring.io").build());
         addressList.add(Address.newBuilder().setHostname("https://www.oracle.com/").build());
-
-
     }
 
     @Autowired
@@ -67,44 +64,54 @@ public class SpringGrpcApplicationTest {
 
    @Test
     public void testEchoWithCorrectHostname(){
+       //Given
         String url = "https://www.google.com/";
+        //When
         ResponseDTO dto = echoTestClient.echo(url);
+        //Then
         assertEquals("200",dto.getResponseCode());
 
     }
     @Test
     public void testEchoBadRequestReturnedResultMustBeEqualsMinusOne(){
+        //Given
         String wrongHostName = "https://www.YaMiha.com/";
+        //When
         ResponseDTO dto = echoTestClient.echo(wrongHostName);
+        //Then
         assertEquals("-1",dto.getResponseTime());
     }
 
     @Test
     public void EchoAsyncTestWithCorrectHostname() throws InterruptedException {
+       //When
        ResponseDTO dto = echoTestClientAsync.echoAsync(addressList).stream()
                .findFirst()
                .get();
-
+        //Then
         assertEquals("200",dto.getResponseCode());
     }
 
     @Test
     public void testEchoAsyncBadRequestReturnedResultMustBeEqualsMinusOne() throws InterruptedException {
+       //Given
         List<Address> addressesWithBadHost = new ArrayList<>();
         String wrongHostName = "https://www.YaMiha.com/";
         addressesWithBadHost.add(Address.newBuilder().setHostname(wrongHostName).build());
-
+        //When
         ResponseDTO dto = echoTestClientAsync.echoAsync(addressesWithBadHost).stream()
                 .findFirst()
                 .orElse(null);
-
+        //Then
         assertEquals("-1",dto.getResponseTime());
 
     }
 
     @Test
     public void concurrentEchoTestBlockStubSingleMessageGoodResponseCheck() throws Exception {
+       //When
        ResponseDTO dto = concurrentEchoTestClient.echoWithThreads("https://www.google.com/");
+       //Then
        assertEquals("200",dto.getResponseCode());
     }
 
@@ -125,14 +132,16 @@ public class SpringGrpcApplicationTest {
 
     @Test
     public void testCallAsyncStubForFourTimesHostnameMustBeLinkedToCorrectResponseDTO() throws Exception {
-        String address404 = "https://allo.ua/ua/televizory-a-mediapleery/";
+       //Given
+       String address404 = "https://allo.ua/ua/televizory-a-mediapleery/";
         List<List<ResponseDTO>> listListResponseDto = new ArrayList<>();
         Callable<List<ResponseDTO>> callable = () -> echoTestClientAsync.echoAsync(addressList);
-
+        //When
         for(int i = 0; i<4; i++){
             List<ResponseDTO> responseDTOList = callable.call();
             listListResponseDto.add(responseDTOList);
         }
+        //Then
         ResponseDTO dto = listListResponseDto.get(1).stream()
                 .filter(i -> i.getHostname().equals(address404))
                 .findFirst()

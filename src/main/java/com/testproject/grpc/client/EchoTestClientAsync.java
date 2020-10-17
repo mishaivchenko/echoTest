@@ -51,7 +51,7 @@ public class EchoTestClientAsync {
                                 i.getResponseTime(),
                                 i.getHostname()))
                         .collect(Collectors.toList());
-
+                logger.info("Client receive {}", list[0]);
                 countDownLatch.countDown();
             }
 

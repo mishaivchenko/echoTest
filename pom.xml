@@ -53,13 +53,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.13</version>
-        </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -71,13 +64,6 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <version>5.3.2</version>
             <scope>test</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.salesforce.servicelibs/rxgrpc-stub -->
-        <dependency>
-            <groupId>com.salesforce.servicelibs</groupId>
-            <artifactId>rxgrpc-stub</artifactId>
-            <version>1.0.0</version>
         </dependency>
     </dependencies>
 
@@ -108,16 +94,6 @@
                     <pluginId>grpc-java</pluginId>
                     <!--suppress UnresolvedMavenProperty -->
                     <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.16.1:exe:${os.detected.classifier}</pluginArtifact>
-
-                    <protocPlugins>
-                        <protocPlugin>
-                            <id>rxgrpc</id>
-                            <groupId>com.salesforce.servicelibs</groupId>
-                            <artifactId>rxgrpc</artifactId>
-                            <version>1.0.0</version>
-                            <mainClass>com.salesforce.rxgrpc.RxGrpcGenerator</mainClass>
-                        </protocPlugin>
-                    </protocPlugins>
                 </configuration>
                 <executions>
                     <execution>
