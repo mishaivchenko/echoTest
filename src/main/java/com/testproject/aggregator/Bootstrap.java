@@ -6,8 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-
 @SpringBootApplication
 @ComponentScan(basePackages = "com.testproject.grpc")
 public class Bootstrap {

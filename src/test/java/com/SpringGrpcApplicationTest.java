@@ -42,7 +42,7 @@ public class SpringGrpcApplicationTest {
         addressList.add(Address.newBuilder().setHostname("https://grpc.io/").build());
         addressList.add(Address.newBuilder().setHostname("https://ru.wikipedia.org/").build());
         addressList.add(Address.newBuilder().setHostname("https://habr.com/ru/").build());
-        addressList.add(Address.newBuilder().setHostname("http://dojki.com/").build());
+        addressList.add(Address.newBuilder().setHostname("http://dojki.com/").build()); //Whooooopps  how did it get here?????
         addressList.add(Address.newBuilder().setHostname("https://stackoverflow.com/").build());
         addressList.add(Address.newBuilder().setHostname("https://www.youtube.com/").build());
         addressList.add(Address.newBuilder().setHostname("https://allo.ua/ua/televizory-a-mediapleery/").build());

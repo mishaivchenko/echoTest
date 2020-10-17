@@ -29,10 +29,17 @@ public class ConcurrentEchoTestClient {
     }
 
     public ResponseDTO echoWithThreads(String host) throws Exception {
-        Address address = Address.newBuilder().setHostname(host).build();
+        Address address = Address.newBuilder()
+                .setHostname(host)
+                .build();
         Callable<Response> c = () -> echoTestServiceBlockingStub.echo(address);
         Response response = c.call();
-        return new ResponseDTO(response.getStatus(), response.getResponseTime(), response.getHostname());
+
+        return new ResponseDTO(
+                response.getStatus(),
+                response.getResponseTime(),
+                response.getHostname()
+        );
     }
 
     public List<ResponseDTO> echoWithThreads(List<Address> addresses) throws Exception {
@@ -44,8 +51,10 @@ public class ConcurrentEchoTestClient {
         }
 
         return responses.stream()
-                .map(i -> new ResponseDTO(i.getStatus(),
-                        i.getResponseTime(), i.getHostname()))
+                .map(i -> new ResponseDTO(
+                        i.getStatus(),
+                        i.getResponseTime(),
+                        i.getHostname()))
                 .collect(Collectors.toList());
     }
 

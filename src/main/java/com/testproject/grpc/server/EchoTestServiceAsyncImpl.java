@@ -56,7 +56,9 @@ public class EchoTestServiceAsyncImpl extends
 
             @Override
             public void onCompleted() {
-                Responses build = Responses.newBuilder().addAllAddresses(responses).build();
+                Responses build = Responses.newBuilder()
+                        .addAllAddresses(responses)
+                        .build();
                 responseObserver.onNext(build);
             }
         };
