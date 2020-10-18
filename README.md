@@ -1,4 +1,4 @@
-#Task:
+# Task:
 
 Implement gRPC server that receives object with adress
 of web resource(example: google.com) in the request and
@@ -49,19 +49,19 @@ throw - NoSuchElementException if input argument is an empty list
 4) Multi-thread non-blocking call Simulation of the client's access to the server simultaneously from 4 threads was carried out. Which implements simulated multi-threaded server load.
 
 
-##How to start
+## How to start
 
 the application uses the spring boot framework.
 Springboot-test is used to demonstrate how it works.
 grpc services go up when tests are running and stop when finished.
 
-##commands
+## commands
 
 mvn compile - to generate java classes from .proto file
 
 mvn clean install - to generate java classes from .proto file
 
-#Attention!
+# Attention!
 
 1. do not compile the project if the full path to the project contains Cyrillic characters
 2. ManagedChannel uses address 6565 for communication. Make sure the given address is not busy or change it.
