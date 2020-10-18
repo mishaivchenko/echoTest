@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -34,7 +35,15 @@ public class EchoTestClientAsync {
 
 
 
-    public List<ResponseDTO> echoAsync(List<Address> addresses) throws InterruptedException {
+    public List<ResponseDTO> echoAsync(List<String> addressesList) throws InterruptedException {
+
+        if(addressesList.size() == 0){
+            throw new NoSuchElementException();
+        }
+
+        List<Address> addresses = addressesList.stream().map(i -> Address.newBuilder()
+                .setHostname(i)
+                .build()).collect(Collectors.toList());
 
         final List<ResponseDTO>[] list = new List[]{new ArrayList<>()};
 

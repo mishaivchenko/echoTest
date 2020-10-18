@@ -24,32 +24,32 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(classes = Bootstrap.class)
 public class SpringGrpcApplicationTest {
 
-    List<Address> addressList;
+    List<String> addressList;
 
     @BeforeEach
     public void init(){
         addressList = new ArrayList<>();
 
-        addressList.add(Address.newBuilder().setHostname("https://www.google.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.gitlab.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.github.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://aws.amazon.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.amazon.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.apple.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.microsoft.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://blog.maddevs.io/").build());
-        addressList.add(Address.newBuilder().setHostname("https://grpc.io/").build());
-        addressList.add(Address.newBuilder().setHostname("https://ru.wikipedia.org/").build());
-        addressList.add(Address.newBuilder().setHostname("https://habr.com/ru/").build());
-        addressList.add(Address.newBuilder().setHostname("http://dojki.com/").build()); //Whooooopps  how did it get here?????
-        addressList.add(Address.newBuilder().setHostname("https://stackoverflow.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.youtube.com/").build());
-        addressList.add(Address.newBuilder().setHostname("https://allo.ua/ua/televizory-a-mediapleery/").build());
-        addressList.add(Address.newBuilder().setHostname("https://javarush.ru/").build());
-        addressList.add(Address.newBuilder().setHostname("https://junit.org//").build());
-        addressList.add(Address.newBuilder().setHostname("https://shneider-host.ru/").build());
-        addressList.add(Address.newBuilder().setHostname("https://spring.io").build());
-        addressList.add(Address.newBuilder().setHostname("https://www.oracle.com/").build());
+        addressList.add("https://www.google.com/");
+        addressList.add("https://www.gitlab.com/");
+        addressList.add("https://www.github.com/");
+        addressList.add("https://aws.amazon.com/");
+        addressList.add("https://www.amazon.com/");
+        addressList.add("https://www.apple.com/");
+        addressList.add("https://www.microsoft.com/");
+        addressList.add("https://blog.maddevs.io/");
+        addressList.add("https://grpc.io/");
+        addressList.add("https://ru.wikipedia.org/");
+        addressList.add("https://habr.com/ru/");
+        addressList.add("http://dojki.com/"); //Whooooopps  how did it get here?????
+        addressList.add("https://stackoverflow.com/");
+        addressList.add("https://www.youtube.com/");
+        addressList.add("https://allo.ua/ua/televizory-a-mediapleery/");
+        addressList.add("https://javarush.ru/");
+        addressList.add("https://junit.org//");
+        addressList.add("https://shneider-host.ru/");
+        addressList.add("https://spring.io");
+        addressList.add("https://www.oracle.com/");
     }
 
     @Autowired
@@ -95,10 +95,9 @@ public class SpringGrpcApplicationTest {
     @Test
     public void testEchoAsyncBadRequestReturnedResultMustBeEqualsMinusOne() throws InterruptedException {
        //Given
-        List<Address> addressesWithBadHost = new ArrayList<>();
+        List<String> addressesWithBadHost = new ArrayList<>();
         String wrongHostName = "https://www.YaMiha.com/";
-        addressesWithBadHost.add(Address.newBuilder().setHostname(wrongHostName).build());
-        //When
+        addressesWithBadHost.add(wrongHostName);
         ResponseDTO dto = echoTestClientAsync.echoAsync(addressesWithBadHost).stream()
                 .findFirst()
                 .orElse(null);
@@ -109,8 +108,13 @@ public class SpringGrpcApplicationTest {
 
     @Test
     public void concurrentEchoTestBlockStubSingleMessageGoodResponseCheck() throws Exception {
+       //Given
+       List<String> hostList = new ArrayList<>();
+       hostList.add("https://www.google.com/");
        //When
-       ResponseDTO dto = concurrentEchoTestClient.echoWithThreads("https://www.google.com/");
+       ResponseDTO dto = concurrentEchoTestClient.echoWithThreads(hostList).stream()
+               .findFirst()
+               .get();
        //Then
        assertEquals("200",dto.getResponseCode());
     }

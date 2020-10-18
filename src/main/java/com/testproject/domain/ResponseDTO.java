@@ -1,9 +1,11 @@
 package com.testproject.domain;
 
 public class ResponseDTO {
+
+    private final String hostname;
     private final String responseCode;
     private final String responseTime;
-    private final String hostname;
+
 
     public ResponseDTO(String responseCode, String responseTime, String hostname) {
         this.responseCode = responseCode;
@@ -22,4 +24,14 @@ public class ResponseDTO {
     public String getHostname() {
         return hostname;
     }
+
+    @Override
+    public String toString() {
+        return "ResponseDTO{" +
+                "hostname='" + hostname + '\'' +
+                ", responseCode='" + responseCode + '\'' +
+                ", responseTime='" + responseTime + '\'' +
+                '}';
+    }
 }
+

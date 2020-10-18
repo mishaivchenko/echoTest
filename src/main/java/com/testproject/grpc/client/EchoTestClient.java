@@ -7,6 +7,7 @@ import io.grpc.ManagedChannelBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 
@@ -28,6 +29,10 @@ public class EchoTestClient {
     }
 
     public ResponseDTO echo(String host) {
+
+        if(StringUtils.isEmpty(host)){
+            throw new IllegalArgumentException();
+        }
 
         Address address = Address.newBuilder()
                 .setHostname(host)
